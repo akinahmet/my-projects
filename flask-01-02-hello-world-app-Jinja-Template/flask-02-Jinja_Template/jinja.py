@@ -1,8 +1,9 @@
 from flask import Flask, render_template 
+# render template bir fonksiyon, birazdan ekleyecegimiz html dosyalarini cagirmak icin 
 
-app = Flask(__name__)
+app = Flask(__name__) # nesne tanimliyoruz
 
-@app.route("/")
+@app.route("/") # ana sayfa
 def head():
     return render_template('index.html', number1 = 20, number2 = 40)
 
@@ -14,5 +15,5 @@ def number():
 
 if __name__ == "__main__":
     
-    app.run(host='0.0.0.0', port=80)
-    #app.run(debug=True
+    # app.run(host='0.0.0.0', port=80)
+    app.run(debug=True)
