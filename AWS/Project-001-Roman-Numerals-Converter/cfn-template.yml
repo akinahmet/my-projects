@@ -35,7 +35,7 @@ Resources:
       InstanceType: t2.micro
       KeyName: !Ref KeyName
       SecurityGroupIds:
-        - !Ref WebServersecurityGroup
+        - !Ref WebServerSecurityGroup
       Tags:
         - Key: Name
           Value: !Sub Web Server of ${AWS::StackName}

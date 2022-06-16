@@ -26,5 +26,5 @@ def main_post():
         return render_template('index.html', developer_name='Ahmet', not_valid=False)  # hicbirisi degil ise sonucu göster
 
 if __name__ == '__main__':
-    app.run(debug=True)  # önce lokalde kontrol et flask standart portu 5000 
-    # app.run(host='0.0.0.0', port=80)  # heryerden 80 portunu ac
+    # app.run(debug=True)  # önce lokalde kontrol et flask standart portu 5000 
+    app.run(host='0.0.0.0', port=80)  # heryerden 80 portunu ac
