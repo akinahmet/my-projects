@@ -6,21 +6,21 @@ from flaskext.mysql import MySQL
 app = Flask(__name__)
 
 # Configure mysql database
-app.config['MYSQL_DATABASE_HOST'] = 'vincenzo.cbanmzptkrzf.us-east-1.rds.amazonaws.com'
-app.config['MYSQL_DATABASE_USER'] = 'admin'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'Clarusway_1'
-app.config['MYSQL_DATABASE_DB'] = 'clarusway'
-app.config['MYSQL_DATABASE_PORT'] = 3306
-mysql = MySQL()
+app.config['MYSQL_DATABASE_HOST'] = 'ahmet.cdniqw1esqco.us-east-1.rds.amazonaws.com' # RDS Endpoint
+app.config['MYSQL_DATABASE_USER'] = 'admin'  # user ismi
+app.config['MYSQL_DATABASE_PASSWORD'] = 'Clarusway_1'  # kendi lokalimde calismayacagim icin sifre vermeliyim
+app.config['MYSQL_DATABASE_DB'] = 'clarusway'  # database adi
+app.config['MYSQL_DATABASE_PORT'] = 3306  # mysql portu
+mysql = MySQL()  # olusturulan database'i mysql'e ata
 mysql.init_app(app)
-connection = mysql.connect()
+connection = mysql.connect()  # connection sagliyoruz
 connection.autocommit(True)
 cursor = connection.cursor()
 
 # Create users table within MySQL db and populate with sample data
 # Execute the code below only once.
 # Write sql code for initializing users table..
-drop_table = 'DROP TABLE IF EXISTS users;'
+drop_table = 'DROP TABLE IF EXISTS users;'  # user tablosu varsa onu sil
 users_table = """
 CREATE TABLE users (
   username varchar(50) NOT NULL,
@@ -39,13 +39,13 @@ VALUES
     ("Tugba", "tugba@tesla.com"),
     ("Kemal", "kemal@samsung.com");
 """
-cursor.execute(drop_table)
+cursor.execute(drop_table)  # bu islemleri yapiyoruz
 cursor.execute(users_table)
 cursor.execute(data)
 
 # Write a function named `find_emails` which find emails using keyword from the user table in the db,
 # and returns result as tuples `(name, email)`.
-def find_emails(keyword):
+def find_emails(keyword):  # bulma fonksiyonu
     query = f"""
     SELECT * FROM users WHERE username like '%{keyword}%';
     """
@@ -109,5 +109,5 @@ def add_email():
 
 # Add a statement to run the Flask application which can be reached from any host on port 80.
 if __name__ == '__main__':
-   #app.run(debug=True)
-   app.run(host='0.0.0.0', port=80)
+   app.run(debug=True)  # lokalde calisma
+   #app.run(host='0.0.0.0', port=80)

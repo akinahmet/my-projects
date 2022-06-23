@@ -98,5 +98,5 @@ def add_email():  # aplikasyon sonuna /add yazinca
 
 # - Add a statement to run the Flask application which can be reached from any host on port 80.
 if __name__=='__main__':
-    app.run(debug=True)  # local icin
-    # app.run(host='0.0.0.0', port=80)  # bu ec2da calisacak sekilde ayarli
+    # app.run(debug=True)  # local icin
+    app.run(host='0.0.0.0', port=80)  # bu ec2da calisacak sekilde ayarli
