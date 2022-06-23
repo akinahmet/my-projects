@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+# SQLAlchemy is a popular SQL toolkit and Object Relational Mapper.
 
 app = Flask(__name__)
 
@@ -9,7 +10,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # - drop users table if exists, create new users table and add some rows for sample
-drop_table = 'DROP TABLE IF EXISTS users;' # olusturulan database'e tablo olusturma
+drop_table = 'DROP TABLE IF EXISTS users;' # varsa users tablosunu kaldir, olusturulan database'e tablo olusturma
 users_table = """ 
 CREATE TABLE users(
 username VARCHAR NOT NULL PRIMARY KEY,
