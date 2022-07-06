@@ -10,7 +10,24 @@ Mappings:
 Conditions:
   
 Resources:
-  
+LogicalID:
+  Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+  Properties:
+    IpAddressType: "String"
+    LoadBalancerAttributes:
+      LoadBalancerAttributes
+    Name: "String"
+    Scheme: "String"
+    SecurityGroups:
+      SecurityGroups
+    SubnetMappings:
+      SubnetMappings
+    Subnets:
+      Subnets
+    Tags:
+      Tags
+    Type: "String"
+
 Transform:
   
 Outputs:
