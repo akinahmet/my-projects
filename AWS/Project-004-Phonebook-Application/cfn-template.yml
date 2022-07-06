@@ -1,13 +1,26 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: |
-  This template creates an Phonebook Application deployed on AWS Application Load Balancer with Auto Scaling and RDS
+  This template creates an Phonebook Application deployed on AWS 
+  Application Load Balancer with Auto Scaling and RDS
+
+Mapping:
+  RegionImageMap:
+    us-east-1:
+      AMI: ami-0022f774911c1d690
+    us-east-2:
+      AMI: ami-0233c2d874b811deb
+    us-west-1:
+      AMI: ami-0ed05376b59b90e46
+    us-west-2:
+      AMI: ami-0dc8f589abe99f538
+    eu-west-1:
+      AMI: ami-058b1b7fe545997ae
+
+
 Parameters:
-  
-Metadata:
-  
-Mappings:
-  
-Conditions:
+  KeyName:
+    Description: Enter the name of your Key Pair for SSH connections.
+    Type: AWS::EC2::KeyPair::KeyName
   
 Resources:
   ALBSecurityGroup:
@@ -61,7 +74,7 @@ Resources:
         LaunchTemplateId: !Ref myLaunchTemplate
         Version: "1"
       MaxSize: "3" # Required
-      MinSize: "3" # Required
+      MinSize: "1" # Required
       TargetGroupARNs:
         TargetGroupARNs
           - !Ref ALBTargetGroup
@@ -84,12 +97,24 @@ Resources:
           - RegionImageMap
           - !Ref AWS::Region
           - AMI
-        InstanceType: !Ref InstanceType  ******************
-        KeyName: !Ref KeyPair *******************
+        InstanceType: t2.micro  
+        KeyName: !Ref KeyPair 
         SecurityGroupIds:
           - !GetAtt ALBSecurityGroup.GroupId
         UserData: !Base64 |
-          #! /bin/bash   ****************************
+          #! /bin/bash
+          yum update -y
+          yum install python3 -y
+          pip3 install flask
+          cd /home/ec2-user
+          wget -P templates https://raw.githubusercontent.com/akinahmet/my-projects/main/AWS/Project-004-Phonebook-Application/templates/index.html
+          wget -P templates https://raw.githubusercontent.com/akinahmet/my-projects/main/AWS/Project-004-Phonebook-Application/templates/add-update.html
+          wget -P templates https://raw.githubusercontent.com/akinahmet/my-projects/main/AWS/Project-004-Phonebook-Application/templates/delete.html
+          wget -P templates https://raw.githubusercontent.com/akinahmet/my-projects/main/AWS/Project-004-Phonebook-Application/phonebook-app.py
+          python3 phonebook-app.py
+
+  
+
 
   MyRDSdbInstance:
     Type: AWS::RDS::DBInstance
@@ -109,15 +134,10 @@ Resources:
       DBSecurityGroupIngress: # Required
         - CIDRIP: 0.0.0.0/0 
       GroupDescription: Database security group # Required
-    
-      
-      
-  
-
-
-
-
-
-Transform:
   
 Outputs:
+  WebSiteURL:
+    Value: !Sub
+      - http://${PublicAddress}
+      - PublicAddress: !GetAtt WebServerHost.PublicDnsName
+    Description: Phonebook Application URL
