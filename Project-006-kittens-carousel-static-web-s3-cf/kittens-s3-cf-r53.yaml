@@ -1,33 +1,37 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: |
-  Cloudformation Template for kittens carousel static website deploy on s3 through cloudfront and route 53
+  Cloudformation Template for kittens carousel static website deploy on s3 through cloudfront and route 53  
 Parameters:
   DomainName:
-    Description: DNS Name of existing Amazon Route 53 hosted zone ex. ahmetdevops.link
+    Description: DNS Name of existing Amazon Route 53 hosted zone ex. clarusway.us
     Type: AWS::Route53::HostedZone::Id
   KittensDomainName:
-    Description: Full domain name for the App. ex. kittens.ahmetdevops.link
-    Type: kittens.ahmetdevops.link
-    AllowedPattern: (?!-)[a-zA-Z0-9-.]{1,63}(?<!-)  
+    Description: Full domain name for the App. ex. vincenzo.clarusway.us
+    Type: String
+    AllowedPattern: (?!-)[a-zA-Z0-9-.]{1,63}(?<!-)
+
 Resources:
+
   KittensBucket:
     Type: AWS::S3::Bucket
-    Properties:
+    Properties: 
       AccessControl: PublicRead
       BucketName: !Ref KittensDomainName
-      WebsiteConfiguration:
+      WebsiteConfiguration: 
         IndexDocument: index.html
+
   KittensBucketPolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
-      Bucket: !Ref KittensBucket # Required
-      PolicyDocument:
+      Bucket: !Ref KittensBucket
+      PolicyDocument:     
         Statement:
           - Sid: PublicReadforStaticWebsite
             Effect: Allow
             Principal: '*'
             Action: s3:GetObject
             Resource: !Join ['', ['arn:aws:s3:::', !Ref 'KittensBucket', /*]]
+            
   KittensCertificate:
     Type: AWS::CertificateManager::Certificate
     Properties:
@@ -45,7 +49,7 @@ Resources:
         Aliases:
         - !Ref KittensDomainName
         Comment: Cloudfront Distribution pointing to Kittens S3 bucket
-        DefaultCacheBehavior:
+        DefaultCacheBehavior: 
           AllowedMethods:
             - GET
             - HEAD
@@ -73,14 +77,16 @@ Resources:
     Type: AWS::Route53::RecordSetGroup
     Properties:
       HostedZoneId: !Ref DomainName
-      RecordSets:
+      RecordSets: 
         - Name: !Ref KittensDomainName
           Type: A
           AliasTarget:
             DNSName: !GetAtt KittensCloudfront.DomainName
             HostedZoneId: Z2FDTNDATAQYW2
-  
-  BucketName:
+
+Outputs:
+
+  BucketName: 
     Description: S3 Bucket URL for Kittens Website
     Value: !GetAtt KittensBucket.WebsiteURL
   CloudfrontEndpoint:
@@ -89,8 +95,3 @@ Resources:
   FullDomainName:
     Description: Full Domain Name of my Application
     Value: !Ref KittensDomainName
-
-      
-              
-  
-Outputs:
