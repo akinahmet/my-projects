@@ -8,8 +8,7 @@ Parameters:
   KittensDomainName:
     Description: Full domain name for the App. ex. kittens.ahmetdevops.link
     Type: kittens.ahmetdevops.link
-    AllowedPattern: (?!-)[a-zA-Z0-9-.]{1,63}(?<!-)
-  
+    AllowedPattern: (?!-)[a-zA-Z0-9-.]{1,63}(?<!-)  
 Resources:
   KittensBucket:
     Type: AWS::S3::Bucket
@@ -18,7 +17,6 @@ Resources:
       BucketName: !Ref KittensDomainName
       WebsiteConfiguration:
         IndexDocument: index.html
-
   KittensBucketPolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
@@ -30,6 +28,19 @@ Resources:
             Principal: '*'
             Action: s3:GetObject
             Resource: !Join ['', ['arn:aws:s3:::', !Ref 'KittensBucket', /*]]
+  LogicalID
+    Type: AWS::CertificateManager::Certificate
+    Properties: 
+      CertificateTransparencyLoggingPreference: ENABLED
+      DomainName: !Ref KittensDomainName
+      DomainValidationOptions: 
+        - DomainValidationOption
+      SubjectAlternativeNames: 
+        - String
+      Tags: 
+        - Tag
+      ValidationMethod: String
+
       
               
   
